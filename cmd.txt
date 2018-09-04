@@ -1,0 +1,5 @@
+C:\Users\SRS>cd ../..
+C:\>ftp peobd.org
+C:\>ping  127.0.0.1
+
+

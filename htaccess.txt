@@ -1,0 +1,2 @@
+#Subfolder(domain.com/subfolder/) access denied but access okay from Subdomain(subfolder.domain.com)
+	RedirectMatch ^/subfolder/(.*)$ https://subfolder.domain.com/$1

@@ -1,0 +1,1 @@
+($this->input->post('f_agent_ids') == '') ? '':implode(',',$this->input->post('f_agent_ids'))

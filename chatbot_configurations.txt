@@ -1,0 +1,11 @@
+172.104.39.28
+port: 22
+username: sohag
+password: sohag2018
+
+DB name: xgpqzevbgn
+username: xgpqzevbgn
+password: hV4a8f4nQe
+
+
+EAAZAQTO0Wm7wBABVrGO1eCmo1d1EPTOv55xk04ap2413m0BbH0UV7boZBJljjq291tbZBTEE5kkrJYp6RtStfM0HCzKkqasO6cNzNV8JEZC0bGSBbhvoyDmWx2W7Tm3AebhnuQTRD0f9MLbrnPlTCvfOemA3hQ5lK4BXvQ8nsQZDZD
