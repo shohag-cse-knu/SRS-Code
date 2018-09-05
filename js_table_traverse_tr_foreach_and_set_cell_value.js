@@ -19,7 +19,8 @@ jQuery('#showFacilityBox .showTr:not(:first-child)').each(function(){ //:not(:la
 
 				total_usd = parseFloat(total_usd) + parseFloat(amount_usd);
 			}
-		}else{
+		}else
+		{
 				jQuery(this).find('td:eq(1)').html("<strong>"+total_bdt+"</strong>");
 				jQuery(this).find('td:eq(2)').html("<strong>"+total_usd+"</strong>");
 		}

@@ -1,3 +1,6 @@
+//If mydiv id has any child of class 'carry_forwarded'
+jQuery("#mydiv").has('.carry_forwarded').length < 1
+
 jQuery("label").children('div').hide();
 		jQuery( "div" ).focusin(function() {
 		  jQuery(this).siblings( "label" ).children('div').show();
