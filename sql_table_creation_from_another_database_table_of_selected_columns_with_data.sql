@@ -1,8 +1,9 @@
-CREATE TABLE test.cust(	
+CREATE TABLE database_name2.custinfo(	
 	SELECT 
-	  c.id,
-	  c.cust_full_id,
-	  c.customer_name
+	  cust.id,
+	  cust.cust_full_id,
+	  cust.customer_name
 	FROM
-	  edoc_cbl_v2.app_customer c
+	  database_name1.customer cust
+	  INNER JOIN database_name1.customer_address details ON(cust.id = details.id)
 )
