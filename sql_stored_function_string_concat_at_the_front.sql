@@ -1,10 +1,10 @@
 DELIMITER $$
 
 USE `test`$$
-
 DROP FUNCTION IF EXISTS `hello`$$
-
-CREATE DEFINER=`root`@`localhost` FUNCTION `hello`(s CHAR(20)) RETURNS CHAR(50) CHARSET latin1
+CREATE 
+    DEFINER=root@localhost 
+    FUNCTION hello(s CHAR(20)) RETURNS CHAR(50) CHARSET latin1
     DETERMINISTIC
 RETURN CONCAT('Hello, ',s,'!')$$
 
