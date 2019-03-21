@@ -1,0 +1,200 @@
+function submitonclick(pagenum,next)
+{
+	jQuery("#loading").show();
+	jQuery("#searchButton").hide();
+	jQuery('#resultdiv').html('');
+	
+	if(next==1){count++;pagenum = count;}
+	else if(next==0){if(count > 0){count--;}pagenum = count;}
+	else{count=count;pagenum = pagenum;}
+
+	var postdata = jQuery('#form').serialize();
+		jQuery.ajax({
+			type: "POST",
+			url: "<?=base_url()?>index.php/facility_closure/grid?pagenum="+pagenum,
+			data : postdata,
+			async : false,
+			success: function(response) {
+			
+			jQuery("#loading").hide();
+			jQuery("#searchButton").show();
+			
+			var json = jQuery.parseJSON(response);
+			maxrow = json.total;
+
+			if(next==0){ if(count > 0){displayrow = displayrow + decr;} else if(count == 0){displayrow = json.data.length;}}
+			else {displayrow = displayrow + json.data.length;}
+			
+			var str_griddiv = '<div id="jqxgrid"></div>';
+			var str_1 = '<div class="pager"><div style="float:left;width:88%;display: inline;top:19%;position: relative;text-align:right">&nbsp;&nbsp;Total Rows: '+json.total+'</div>';
+			var str_2 = '<div style="float:left;width:6%;display: inline;top:19%;position: relative;text-align:center">Page: '+(pagenum+1)+'</div>';
+			
+			var str_3 = '<div style="float:left;width:6%;display: inline;top:13%;position: relative;text-align:center"><div style="background-image:url(<?=base_url()?>images/left.png);display: block;height:19px;width:30px;float:left;background-repeat: no-repeat;cursor:pointer"';
+			if(count > 0){ str_3 = str_3+'onclick=submitonclick('+pagenum+',0)';} str_3 = str_3+'></div>';
+
+			var str_right = '<div style="background-image:url(<?=base_url()?>images/right.png);display: block;height:19px;width:30px;float:left;background-repeat: no-repeat;margin:0 7%;cursor:pointer"';if(maxrow > displayrow) {str_right = str_right+'onclick=submitonclick('+pagenum+',1)';} str_right = str_right+'></div></div>';
+			
+			var res = str_griddiv.concat(str_1,str_2,str_3,str_right,'</div>');
+			inc = json.data.length;
+			decr = -json.data.length;
+
+			jQuery('#resultdiv').html(res);
+			
+			var source =
+			{
+				 datatype: "json",
+				 datafields: [
+					 { name: 'id', type: 'int'},
+					 { name: 'cust_id', type: 'int'},
+					 { name: 'segment_id', type: 'int'},
+					 { name: 'approval_id', type: 'int'},
+					 { name: 'loan_approval_ref_no', type: 'string'},
+					 { name: 'loan_approval_dt', type: 'string'},
+					 { name: 'facility_type', type: 'string'},
+					 { name: 'cust_liability_no', type: 'string'},
+					 { name: 'facility_line_code', type: 'string'},
+					 { name: 'facility_nature', type: 'string'},
+					 { name: 'type', type: 'string'},
+					 { name: 'fl_limit', type: 'string'},
+					 { name: 'fl_currency', type: 'string'},
+					 { name: 'line_type', type: 'string'},
+					 { name: 'current_rm_name', type: 'string'},
+					 { name: 'current_rm_id', type: 'string'},
+					 { name: 'tenor', type: 'string'},
+					 { name: 'linests', type: 'string'},
+					 { name: 'cust_full_id', type: 'string'},
+					 { name: 'customer_name', type: 'string'},
+					 { name: 'fl_strt_dt', type: 'string'},
+					 { name: 'fl_exp_dt', type: 'string'},
+					 { name: 'facility_line_id', type: 'string'}
+				],
+				id: 'id',
+				cache: false,
+				localdata: json.data
+			};
+			var dataadapter = new jQuery.jqx.dataAdapter(source, {
+					loadError: function(xhr, status, error)
+					{
+						alert(error);
+					}
+				});
+			
+            var updatingCheckState = false;
+
+			jQuery("#jqxgrid").jqxGrid(
+			{
+				width:'99%',
+				height:320,
+				source: dataadapter,
+				theme: theme,
+				filterable: false,
+				sortable: false,
+				autoheight: false,
+				pageable: true,
+				virtualmode: true,
+				editable: true,
+				enablehover: true,
+				enablebrowserselection: true,
+				selectionmode: 'none',
+				rendergridrows: function(obj)
+				{
+					 return obj.data;
+				},
+
+				columns: [
+				  	{ text: '', datafield: 'id',hidden:true,  editable: false,  width: '45' },
+				  	{ text: 'cust_id', datafield: 'cust_id',hidden:true,  editable: false,  width: '45' },
+					{ text: '',menu: false,  datafield: 'available', sortable: false, columntype: 'checkbox', width: 40,
+					  renderer: function () {
+						  return '<div style="margin-left: 10px; margin-top: 5px;"></div>';
+					  },
+					  rendered: function (element) {
+						  jQuery(element).jqxCheckBox({ theme: theme, width: 16, height: 16, animationShowDelay: 0, animationHideDelay: 0 });
+						  columnCheckBox = jQuery(element);
+						  jQuery(element).on('change', function (event) {
+							  var checked = event.args.checked;
+							  if (checked == null || updatingCheckState) return;
+							  var rowscount = jQuery("#jqxgrid").jqxGrid('getdatainformation').rowscount;
+							  jQuery("#jqxgrid").jqxGrid('beginupdate');
+							  if (checked) {
+								  jQuery("#jqxgrid").jqxGrid('selectallrows');
+							  }
+							  else if (checked == false) {
+								  jQuery("#jqxgrid").jqxGrid('clearselection');
+							  }
+							  for (var i = 0; i < rowscount; i++) {
+								  jQuery("#jqxgrid").jqxGrid('setcellvalue', i, 'available', event.args.checked);
+							  }
+							  jQuery("#jqxgrid").jqxGrid('endupdate');
+						  });
+						  return true;
+					  }
+					},
+				  	{ text: 'P', menu: false, datafield: 'preview', align:'center', editable: false, sortable: false, width: 30,
+						cellsrenderer: function (row) {
+						editrow = row;
+						var dataRecord = jQuery("#jqxgrid").jqxGrid('getrowdata', editrow);
+						return '<div style="text-align:center;  cursor:pointer" onclick="facility_preview('+dataRecord.facility_line_id+');" ><img align="center" src="<?=base_url()?>images/view_detail.png"></div>';
+					  }
+				  	},
+				  	{ text: 'Facility Name', datafield: 'facility_type',  editable: false,  width: '200' },
+				  	{ text: 'Line Status', datafield: 'linests', editable: false ,width: '80'},
+				  	{ text: 'Facility Nature', datafield: 'facility_nature',  editable: false,  width: '100' },
+				  	{ text: 'Mode of Facility', datafield: 'type',  editable: false,  width: '100' },
+				  	{ text: 'Line Type', datafield: 'line_type', editable: false ,width: '80'},
+				  	{ text: 'Limit', datafield: 'fl_limit', align:'right', cellsalign:'right', width: '150' },
+				  	{ text: 'Currency', datafield: 'fl_currency', width: '100' },
+				  	{ text: 'Facility Tenor', datafield: 'tenor', width: '100' },
+				  	{ text: 'Exp. Date', datafield: 'fl_exp_dt', editable: false ,width: '100'},
+				  	{ text: 'Sanction Reference No', datafield: 'loan_approval_ref_no', editable: false ,width: '150'},
+				  	{ text: 'Sanction Date', datafield: 'loan_approval_dt', editable: false ,width: '100'},
+				  	{ text: 'Current RM', datafield: 'current_rm_name',  editable: false,  width: '200' }
+				]
+			});
+			if(json.total =='0')
+			{
+				jQuery('#errormsg').html('No Data Found !!!');
+			}
+							
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert("error");
+			}
+		});
+
+		//End check box start 
+		jQuery("#jqxgrid").on('cellbeginedit', function (event) {
+            var column = args.datafield;
+            var row = args.rowindex;
+            var value = args.value;
+            var rowindexes = jQuery('#jqxgrid').jqxGrid('getselectedrowindexes');
+        });
+        // select or unselect rows when the checkbox is checked or unchecked.
+        jQuery("#jqxgrid").on('cellendedit', function (event) {
+            if (event.args.value) {
+                jQuery("#jqxgrid").jqxGrid('selectrow', event.args.rowindex);
+            }
+            else {
+                jQuery("#jqxgrid").jqxGrid('unselectrow', event.args.rowindex);
+            }
+
+            if (columnCheckBox) {
+            	
+                var selectedRowsCount = jQuery("#jqxgrid").jqxGrid('getselectedrowindexes').length;
+                var rowscount = jQuery("#jqxgrid").jqxGrid('getdatainformation').rowscount;
+                updatingCheckState = true;
+                if (selectedRowsCount == rowscount) {
+                    jQuery(columnCheckBox).jqxCheckBox('check')
+                }
+                else if (selectedRowsCount > 0) {
+                    jQuery(columnCheckBox).jqxCheckBox('indeterminate');
+                }
+                else {
+                    jQuery(columnCheckBox).jqxCheckBox('uncheck');
+                }
+                updatingCheckState = false;
+            }
+        });
+		//End check box update
+	jQuery("#buttons").show();
+};
