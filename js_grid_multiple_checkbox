@@ -198,3 +198,92 @@ function submitonclick(pagenum,next)
 		//End check box update
 	jQuery("#buttons").show();
 };
+
+function close_line(flag)
+{
+	flag1 = 0; 
+	var selectedrowindexes = jQuery("#jqxgrid").jqxGrid('getselectedrowindexes');
+	var selectedRowsCount = jQuery("#jqxgrid").jqxGrid('getselectedrowindexes').length;
+	var rowscount = jQuery("#jqxgrid").jqxGrid('getdatainformation').rowscount;
+
+	// begin update. Stops the Grid's rendering.
+	jQuery("#jqxgrid").jqxGrid('beginupdate');
+	selectedrowindexes.sort();
+	//alert(selectedrowindexes+" ## "+selectedRowsCount+" ## "+rowscount);
+	var arr_approval = [];
+	var arr_facility = [];
+	if(selectedrowindexes!=''){
+		//selected rows check
+		for (var m = 0; m < selectedrowindexes.length; m++) {
+			var selectedrowindex = selectedrowindexes[selectedrowindexes.length - m - 1];
+			if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+				var approval_id = jQuery("#jqxgrid").jqxGrid('getcellvalue', selectedrowindex, 'approval_id');
+				var facility_line_id = jQuery("#jqxgrid").jqxGrid('getcellvalue', selectedrowindex, 'facility_line_id');
+				var line_sts = jQuery("#jqxgrid").jqxGrid('getcellvalue', selectedrowindex, 'linests');
+
+				if(flag == 'Close' && line_sts != 'closed'){
+					flag1 = 1;
+				}
+
+				if(flag == 'Open' && line_sts == 'closed'){
+					flag1 = 1;
+				}
+				//console.log('m='+m+" id="+id);
+				arr_approval.push(approval_id);
+				arr_facility.push(facility_line_id);
+			}
+		}
+		//end loop
+		if(flag1 == 1){
+			jQuery("#buttons").hide();
+			jQuery("#loading").show();
+			jQuery.ajax({
+				type: "POST",
+				cache: false,
+				url: "<?=base_url()?>index.php/facility_closure/closeline",
+				data : {flid : arr_facility, appid: arr_approval,flag: flag},
+				datatype: "json",
+				success: function(response){
+					var json = jQuery.parseJSON(response);
+					if(json.Message == '0')
+					{
+						alert('Sorry could not update ');	
+						return false;
+					}
+					else if(flag == 'Open' && json.Message == 'safe_out')
+					{
+						alert('Sorry, Previously Safe Out Occured!!');	
+						jQuery("#loading").hide();
+						jQuery("#buttons").show();
+						return false;
+					}
+					else
+					{
+						if(flag == 'Close'){
+							alert('Facility line closed successfully');
+						}else{
+							alert('Facility line re-open successfully');
+						}
+						clearCount();
+						submitonclick(0,2);
+						jQuery("#buttons").show();
+						return true;
+					}
+				}
+			});
+		}else{
+			jQuery("#buttons").show();
+			if(flag == 'Close'){
+				alert('All selected facilities are already closed.');
+			}else{
+				alert('All selected facilities are already opened.');
+			}
+			
+			return false;
+		}
+
+	}else{
+		alert('Please Check Facility.');
+		return false;
+	}	
+}
