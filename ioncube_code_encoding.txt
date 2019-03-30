@@ -1,2 +1,0 @@
-cd /usr/local/ioncube/
-./ioncube_encoder.sh -C -x86-64 -55 /usr/local/temp/ -o /usr/local/temp_encoded/

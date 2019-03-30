@@ -1,1 +1,0 @@
-$objPHPExcel->getActiveSheet()->setCellValueExplicit('F34',$result_inad->tin_no,PHPExcel_Cell_DataType::TYPE_STRING);
