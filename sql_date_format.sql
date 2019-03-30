@@ -1,0 +1,1 @@
+IF(j0.loan_approval_dt='0000-00-00','',DATE_FORMAT(j0.loan_approval_dt,'%d/%m/%Y'))loan_approval_dt,

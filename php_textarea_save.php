@@ -1,0 +1,1 @@
+'facility_description' => htmlspecialchars(trim(preg_replace("/\r|\n|\r\n|\r\r/", " ", $this->input->post('facility_description')))),

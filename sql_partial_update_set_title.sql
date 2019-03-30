@@ -1,0 +1,1 @@
+UPDATE par_docs_title SET has_partial_update = 1

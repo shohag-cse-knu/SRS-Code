@@ -1,0 +1,20 @@
+
+//index.php 'production' instead of development
+
+define('ENVIRONMENT', 'development');
+
+//config.php
+$config['log_threshold'] = 1;
+
+//database.php
+$db['default']['db_debug'] = FALSE;
+
+//
+
+$db_debug = $this->db->db_debug;
+$this->db->db_debug = false; // off display of db error
+
+
+-----your query---
+
+$this->db->db_debug = $db_debug;//before return
