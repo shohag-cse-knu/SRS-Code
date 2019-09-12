@@ -1,0 +1,8 @@
+SELECT *
+FROM
+(
+    SELECT access.*, @counter := @counter +1 counter
+    FROM (SELECT @counter:=0) initvar, access
+    ORDER BY userid
+) X
+WHERE counter <= (10/100 * @counter);
