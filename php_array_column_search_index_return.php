@@ -8,7 +8,7 @@ $arr_dist_sro = array(
 	  array('id'=>145,'district'=>'field_4','sro'=>'field_5') 
  );
  
- elseif(array_search($row2->docs_title_id, array_column($arr_dist_sro, 'id')) !== false)
+ if(array_search($row2->docs_title_id, array_column($arr_dist_sro, 'id')) !== false)
 {
 	$index = array_search($row2->docs_title_id, array_column($arr_dist_sro, 'id'));
 	$fil_district = $arr_dist_sro[$index]['district'];
