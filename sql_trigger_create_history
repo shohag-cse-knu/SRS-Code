@@ -1,0 +1,16 @@
+DELIMITER $$
+
+USE `edoc_cbl_v2`$$
+
+DROP TRIGGER /*!50032 IF EXISTS */ `update_title_access`$$
+
+CREATE
+    /*!50017 DEFINER = 'shohag'@'%' */
+    TRIGGER `update_title_access` AFTER INSERT ON `title_level_access_histry` 
+    FOR EACH ROW BEGIN
+	UPDATE title_level_access SET doc_ck_req= NEW.doc_ck_req, request_doc_title_id= NEW.request_doc_title_id, accept_doc_title_id = NEW.accept_doc_title_id, req_acpt= NEW.req_acpt, req_by = NEW.req_by, req_dt= NEW.req_dt, acpt_by = NEW.acpt_by, acpt_dt =NEW.acpt_dt, v_by =NEW.v_by, v_dt=NEW.v_dt
+	WHERE customer_id = new.customer_id AND segment_id = new.segment_id AND app_ref_no = new.app_ref_no;
+    END;
+$$
+
+DELIMITER ;
