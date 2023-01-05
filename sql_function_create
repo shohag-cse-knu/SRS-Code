@@ -1,0 +1,14 @@
+DELIMITER $$
+
+USE `edoc_cbl_v2`$$
+
+DROP FUNCTION IF EXISTS `customer_full_id`$$
+
+CREATE DEFINER=`shohag`@`%` FUNCTION `customer_full_id`(PID INT) RETURNS VARCHAR(50) CHARSET latin1
+BEGIN
+	DECLARE customer_id VARCHAR(50);
+	SELECT cust_full_id INTO customer_id FROM edoc_cbl_v2.app_customer WHERE id = PID;
+	RETURN customer_id;
+END$$
+
+DELIMITER ;
