@@ -1,0 +1,15 @@
+DELIMITER $$
+
+USE `edoc_cbl_v2`$$
+
+DROP TRIGGER /*!50032 IF EXISTS */ `update_segname`$$
+
+CREATE
+    /*!50017 DEFINER = 'shohag'@'%' */
+    TRIGGER `update_segname` AFTER UPDATE ON `par_product_segment` 
+    FOR EACH ROW BEGIN
+	UPDATE `app_loan_approval` a SET a.`segment_name`=NEW.name WHERE a.`segment_id`=NEW.id;
+    END;
+$$
+
+DELIMITER ;
