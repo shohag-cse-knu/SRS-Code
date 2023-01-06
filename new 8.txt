@@ -1,0 +1,33 @@
+INSERT INTO facility(NAME, short_code, facility_type, division_code, district_code, thana_code)
+-- SELECT 
+-- village AS NAME,
+-- '' AS short_code,
+-- '3' AS facility_type,
+-- `div` AS division_code,
+-- district AS district_code,
+-- thana AS thana_code
+-- FROM temp_data WHERE village != ''
+SELECT 
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(t.village, ',', n.n), ',', -1)) NAME,
+'' AS short_code,
+'3' AS facility_type,
+`div` AS division_code,
+district AS district_code,
+thana AS thana_code
+FROM (SELECT * FROM `temp_data` WHERE village != '') t 
+INNER JOIN 
+  (
+   SELECT a.N + b.N * 10 + 1 n
+     FROM 
+    (SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+   ,(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+    ORDER BY n 
+   ) n
+ WHERE n.n <= 1 + (LENGTH(t.village) - LENGTH(REPLACE(t.village, ',', '')))
+ ORDER BY contact,NAME
+ 
+ UPDATE `acf_heed_bd`.`facility` SET thana_code =14 WHERE `thana_code` = 'Borolekha'
+
+UPDATE `facility`
+
+SET short_code = id + 200

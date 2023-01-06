@@ -1,0 +1,85 @@
+* {margin:0;padding:0;}
+i {
+	color:lightblue;text-shadow:2px 2px 4px #000000;
+}
+.margin-top-2 {
+	margin-top:2px;
+}
+.call-info {
+	background-color: #FFFAF0;
+	border:1px solid #808080;
+	border-radius: 10px;
+	padding: 2px;
+}
+.call-info:hover {
+	background-color: #E6E6FA;
+}
+.image-center {
+	margin: 13px;
+}
+.call-details {
+	border:1px solid #808080;
+	display: none;
+}
+.btn {
+	padding: 6px 37px;
+}
+.font_size {
+	font-size: 16px;
+}
+.margin_left{
+	margin-left: 10px;
+}
+.inbox-details {
+	border:1px solid #808080;
+	display: none;
+}
+.scrollable {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 250px;
+}
+.message_box_left {
+	margin: 0px 15px 0px 90px;
+	background-color: #e3e3e3;
+	border-radius: 10px;
+}
+.message_box_right {
+	margin: 0px 119px 0px 0px;
+	background-color: #e3e3e3;
+	border-radius: 10px;
+}
+.navbar {
+  min-height: 95px;
+}
+.navbar-nav > li > a {
+  line-height: 65px;
+}
+.navbar-toggle {
+  margin-top: 25px;
+}
+@media (min-width: 768px) {
+  .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+  }
+}
+.main {
+  margin: 0 auto -60px;
+}
+.main .img-responsive {
+  margin-bottom: 30px;
+}
+footer, .footer-push {
+  height: 65px;
+  background-color: #f5f5f5;
+}
+.social-icons {
+  margin-right: 15px;
+  font-size: 40px;
+  line-height: 75px;
+}
+
+#gallery-camera {
+	margin: 0px 25px;
+	font-size:189px;
+}

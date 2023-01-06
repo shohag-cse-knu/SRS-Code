@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+<title>JavaScript Animation</title> 
+<style>
+* {
+    margin:0;
+    padding:0;
+}
+#box{
+    width:100px;
+    height:100px;
+    background-color:blue;
+}
+</style>
+<script type = "text/javascript"> 
+//If the box touches or nearby any of the edges of window
+    boxObj = null 
+	const init = () => {  
+        boxObj = document.getElementById('box')    
+        boxObj.style.position = 'relative'   
+        boxObj.style.left = '0px'
+		boxObj.style.top = '50px'	
+        movingDistance = 10 
+        //Let axis 0 for positive rotation 
+        sessionStorage.setItem("axis", 0) 
+        moveRight()
+    }  
+    const moveRight = () => {	
+        let windowHeight = parent.innerHeight
+        let windowWidth = parent.innerWidth
+        //Box lower edge from the top
+        let currentPositionTop = boxObj.offsetTop+100 
+        //Box right edge from the left
+		let currentPositionLeft = boxObj.offsetLeft+100 
+		let flag = sessionStorage.getItem("axis")
+        // If window bottom is touched ny the box
+        let diffFromBottom = windowHeight - currentPositionTop 
+        // If Window width is touched by the box
+		let diffFromRight = windowWidth - currentPositionLeft 
+
+		if(diffFromBottom < movingDistance || diffFromRight < movingDistance || flag == 1){
+            //Let axis 1 for negative rotation
+		    sessionStorage.setItem("axis", 1)  
+		    nextDistance = -movingDistance
+		}
+        // As the box's width 100 and positioned 50px from top
+		else if(currentPositionTop == 150){ 
+			  nextDistance = movingDistance
+			  sessionStorage.setItem("axis", 0)
+		}
+        boxObj.style.left = parseInt(boxObj.style.left) + nextDistance + 'px'
+        boxObj.style.top = parseInt(boxObj.style.top) + nextDistance + 'px' 				   
+        const animate = setTimeout(moveRight,1000)		   
+    }   
+    window.onload = init 
+</script> 
+</head> 
+<body> 
+    <div id="box" style=''></div>
+</body>
+</html>
